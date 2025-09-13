@@ -1,0 +1,88 @@
+-- MOSTRANDO OS BANCOS DE DAOS 
+SHOW DATABASES;
+
+-- CRIANDO BANCO DE DADOS
+CREATE DATABASE RegistroPublicacoes;
+
+-- ENTRANDO EM UM BANCO
+USE RegistroPublicacoes;
+
+-- DELETAR BANCO 
+DROP DATABASE FirstExemple;
+
+CREATE DATABASE FirstExemple;
+
+SHOW DATABASES;
+CREATE DATABASE FirstExemple;
+
+USE FirstExemple;
+
+CREATE TABLE IF NOT EXISTS autor (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_autor VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS editora (
+	id INT AUTO_INCREMENT, -- campo auto incremento adiciona em sequencia de forma automatica
+    nome_editora VARCHAR(120) UNIQUE, -- so existira uma editora nao permite adicionar outra editora com  o mesmo nome
+    pais VARCHAR(5) UNIQUE, -- so existira um pais com um nome ao tentar adicionar o mesmo pais novamente dara erro
+    PRIMARY KEY(id) -- outra forma de criar a primary key
+);
+-- crinado as tabelas
+CREATE TABLE IF NOT EXISTS Periodicos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_periodico VARCHAR(20),
+    issn INT,
+    id_editora INT -- esse campo se refere a um campo que ira armazera a chave da editora ou seja sera para chave estrangeira
+);
+
+-- artigo de um periodico
+CREATE TABLE IF NOT EXISTS artigo (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+        nome_artigo VARCHAR(200),
+        texto_atigo VARCHAR(255),
+        id_autor INT
+);
+
+
+-- CRIANDO CONSTRAINT PARA CHAVES
+-- relacionamento entre Periodicos e editora
+ALTER TABLE Periodicos -- comando que altera uma tabela
+ADD CONSTRAINT fk_periodicos_editora -- cria um constraint
+FOREIGN KEY (id_editora) -- diz que se trata de um uma chave estrageira e qual o campo da tabela que recebera o relacionamento
+REFERENCES editora(id); -- qual a tabela e campo de referencia
+
+-- relacionamento entre autor e artigo
+ALTER TABLE artigo
+ADD CONSTRAINT fk_artigo_autor
+FOREIGN KEY (id_autor)
+REFERENCES autor(id);
+
+-- MOSTRANDO TODAS AS RESTRICOES DE UMA TABELA
+SHOW INDEX FROM editora;
+-- retirando restricoes 
+ALTER TABLE editora DROP CONSTRAINT nome_editora;
+
+-- alterar um valor de um campo de uma tabela 
+ALTER TABLE editora MODIFY pais VARCHAR(100) NULL;
+
+-- INSERINDO DADOS NAS TABELAS
+INSERT INTO autor (nome_autor) VALUES ('TIAGO');
+
+INSERT INTO artigo (nome_artigo,texto_atigo,id_autor) VALUES ('SQL NA PRATICA','TESTE', 1);
+
+INSERT INTO editora(nome_editora, pais) VALUES ('COMPESAS', 'BRASIL');
+INSERT INTO Periodicos (nome_periodico, issn, id_editora) VALUES ('CAMPANHA', 80,1); -- o id_editora precisa ser um nome valido na tabela editora
+
+-- APAGANDO DADOS 
+DELETE FROM editora WHERE id > 0;
+
+-- ATUALIZANDO DADOS
+UPDATE editora SET nome_editora = 'NOVA EDITORA' WHERE id = 1;
+
+-- SELECINANDO DADOS NA TABELA
+SELECT * FROM editora;
+-- SELECIONANDO DADOS PERIODICOS
+SELECT * FROM Periodicos;
+-- SELECIONANDO OS ARTIGOS
+SELECT *  FROM artigo;

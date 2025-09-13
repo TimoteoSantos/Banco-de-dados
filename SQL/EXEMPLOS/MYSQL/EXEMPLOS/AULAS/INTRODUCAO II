@@ -1,0 +1,22 @@
+-- mostrando os bancos disponiveis
+SHOW DATABASES;
+
+-- selecionando um banco
+USE FirstExemple;
+
+-- vendo as tabelas do banco
+SHOW TABLES;
+
+-- vendo detalhes de uma tabela
+DESCRIBE autor;
+
+-- adicionar um campo a uma tablea
+ALTER TABLE autor ADD COLUMN data_nascimento DATE;
+
+-- alterando o nome de uma coluna
+ALTER TABLE autor CHANGE COLUMN data_nascimento dataNasc DATE;
+
+-- excluir uma coluna
+ALTER TABLE autor DROP COLUMN data_nascimento;
+
+
